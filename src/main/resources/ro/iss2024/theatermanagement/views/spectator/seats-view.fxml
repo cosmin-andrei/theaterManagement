@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.iss2024.theatermanagement.views.SeatsView">
+   <children>
+      <Button layoutX="430.0" layoutY="348.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Finish your reservation" />
+      <TableView layoutY="50.0" prefHeight="351.0" prefWidth="405.0">
+        <columns>
+          <TableColumn prefWidth="73.33332574367523" text="Lodge" />
+          <TableColumn prefWidth="76.66666412353516" text="Row" />
+            <TableColumn minWidth="5.66668701171875" text="Seat" />
+            <TableColumn prefWidth="84.66664123535156" text="Price" />
+            <TableColumn prefWidth="89.3333740234375" text="Status" />
+        </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="14.0" text="Select your seats" textFill="#3507ff">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label layoutX="430.0" layoutY="50.0" text="Select the lodge">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <ChoiceBox layoutX="430.0" layoutY="77.0" prefHeight="25.0" prefWidth="136.0" />
+      <Label layoutX="430.0" layoutY="129.0" text="Select the row">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <ChoiceBox layoutX="430.0" layoutY="155.0" prefHeight="25.0" prefWidth="136.0" />
+   </children>
+</AnchorPane>

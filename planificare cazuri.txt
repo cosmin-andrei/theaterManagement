@@ -1,0 +1,15 @@
+Iteratia 1
+
+- Login
+- Vizualizare detalii reprezentatie
+- Adauga reprezentatie
+- Modifica reprezentatie
+
+Iteratia 2
+- Sterge reprezentatie
+- Vizualizare locuri
+- Rezerva loc
+- Plata rezervare
+
+Iteratia 3
+- Modifica preturi locuri
