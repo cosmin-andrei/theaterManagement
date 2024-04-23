@@ -26,7 +26,7 @@ tasks.withType(JavaCompile) {
 
 application {
   mainModule = 'ro.iss2024.theatermanagement'
-  mainClass = 'ro.iss2024.theatermanagement.HelloApplication'
+  mainClass = 'ro.iss2024.theatermanagement.Main'
 }
 
 javafx {
@@ -43,6 +43,8 @@ dependencies {
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+  implementation 'org.postgresql:postgresql:42.2.23'
 }
 
 test {
