@@ -4,10 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import ro.iss2024.theatermanagement.controller.AdminController;
+import ro.iss2024.theatermanagement.controller.admin.AdminController;
 import ro.iss2024.theatermanagement.controller.LoginController;
+import ro.iss2024.theatermanagement.controller.spectator.SpectatorController;
 import ro.iss2024.theatermanagement.domain.Spectator;
 import ro.iss2024.theatermanagement.repository.*;
 import ro.iss2024.theatermanagement.service.Service;
@@ -83,9 +83,32 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void openSpectatorStage(Spectator spectator) {
+        try {
+            FXMLLoader spectatorLoader = new FXMLLoader();
+            spectatorLoader.setLocation(getClass().getResource("views/spectator/spectator-view.fxml"));
+
+
+            Stage spectatorStage = new Stage();
+            Scene spectatorScene = new Scene(spectatorLoader.load());
+
+            spectatorStage.setTitle("Panou spectator: " + spectator.getName());
+            spectatorStage.setScene(spectatorScene);
+
+            SpectatorController spectatorController = spectatorLoader.getController();
+            spectatorController.setService(service, spectator);
+            spectatorStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

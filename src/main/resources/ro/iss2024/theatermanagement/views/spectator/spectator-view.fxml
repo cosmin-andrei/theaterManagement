@@ -4,20 +4,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.iss2024.theatermanagement.views.SpectatorView">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.iss2024.theatermanagement.controller.spectator.SpectatorController">
    <children>
       <Label layoutX="217.0" layoutY="25.0" prefHeight="47.0" prefWidth="165.0" text="What's the play for today?">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font></Label>
       <Label layoutX="85.0" layoutY="84.0" text="Name" />
-      <TextField layoutX="85.0" layoutY="104.0" prefHeight="25.0" prefWidth="181.0" />
+      <TextField fx:id="txtName" layoutX="85.0" layoutY="104.0" prefHeight="25.0" prefWidth="181.0" />
       <Label layoutX="279.0" layoutY="84.0" text="Date" />
-      <TextField layoutX="279.0" layoutY="104.0" prefHeight="25.0" prefWidth="148.0" />
+      <TextField fx:id="txtDate" layoutX="279.0" layoutY="104.0" prefHeight="25.0" prefWidth="148.0" />
       <Label layoutX="85.0" layoutY="148.0" text="Description" />
-      <TextArea layoutX="85.0" layoutY="168.0" prefHeight="130.0" prefWidth="429.0" />
-      <Button layoutX="391.0" layoutY="341.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="124.0" text="Make a reservation" />
+      <TextArea fx:id="txtDescription" layoutX="85.0" layoutY="168.0" prefHeight="130.0" prefWidth="429.0" />
+      <Button layoutX="391.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleReservation" prefHeight="25.0" prefWidth="124.0" text="Make a reservation" />
       <Label layoutX="437.0" layoutY="85.0" text="Duration (min)" />
-      <TextField layoutX="438.0" layoutY="104.0" prefHeight="25.0" prefWidth="77.0" />
+      <TextField fx:id="txtDuration" layoutX="438.0" layoutY="104.0" prefHeight="25.0" prefWidth="77.0" />
    </children>
 </AnchorPane>

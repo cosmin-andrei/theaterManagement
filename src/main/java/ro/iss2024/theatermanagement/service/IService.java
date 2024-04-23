@@ -2,6 +2,9 @@ package ro.iss2024.theatermanagement.service;
 
 import ro.iss2024.theatermanagement.domain.*;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public interface IService {
 
     boolean login_admin(User user);
@@ -20,4 +23,5 @@ public interface IService {
     void addReservation(Reservation reservation);
     void addSeatReserved(SeatReserved seatReserved);
 
+    List<Performance> getAllPerformances() throws SQLException;
 }

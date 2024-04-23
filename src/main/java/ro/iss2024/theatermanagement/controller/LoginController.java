@@ -2,6 +2,7 @@ package ro.iss2024.theatermanagement.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import ro.iss2024.theatermanagement.Main;
 import ro.iss2024.theatermanagement.controller.utils.MessageAlert;
@@ -51,5 +52,15 @@ public class LoginController {
 
     public void setMain(Main main) {
         this.main = main;
+    }
+
+    public void handleKeyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode().toString().equals("ENTER")) {
+            try {
+                handleLogin();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

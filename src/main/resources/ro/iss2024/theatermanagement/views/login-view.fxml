@@ -12,9 +12,9 @@
          </font>
       </Label>
       <TextField fx:id="textUsername" layoutX="151.0" layoutY="161.0" prefHeight="25.0" prefWidth="297.0" />
-      <TextField fx:id="textPassword" layoutX="151.0" layoutY="231.0" prefHeight="25.0" prefWidth="297.0" />
+      <TextField fx:id="textPassword" layoutX="151.0" layoutY="231.0" prefHeight="25.0" prefWidth="297.0" onKeyPressed="#handleKeyPressed"/>
       <Label layoutX="151.0" layoutY="135.0" text="Username" />
-      <Label layoutX="151.0" layoutY="208.0" text="Password" />
+      <Label layoutX="151.0" layoutY="208.0" text="Password"/>
       <Button layoutX="261.0" layoutY="301.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="25.0" prefWidth="77.0" text="Login" />
    </children>
 </AnchorPane>

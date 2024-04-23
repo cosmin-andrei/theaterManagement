@@ -3,16 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.iss2024.theatermanagement.views.admin.EditView">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.iss2024.theatermanagement.controller.admin.EditController">
    <children>
       <Label layoutX="67.0" layoutY="64.0" text="Name" />
-      <TextField layoutX="67.0" layoutY="82.0" prefHeight="25.0" prefWidth="466.0" />
+      <TextField fx:id="txtName" layoutX="67.0" layoutY="82.0" prefHeight="25.0" prefWidth="466.0" />
       <Label layoutX="67.0" layoutY="119.0" text="Description" />
-      <TextArea layoutX="67.0" layoutY="138.0" prefHeight="98.0" prefWidth="466.0" />
+      <TextArea fx:id="txtDescription" layoutX="67.0" layoutY="138.0" prefHeight="98.0" prefWidth="466.0" />
       <Label layoutX="67.0" layoutY="250.0" text="Date and time" />
-      <DatePicker layoutX="67.0" layoutY="269.0" prefHeight="25.0" prefWidth="237.0" />
       <Label layoutX="349.0" layoutY="250.0" text="Duration (min)" />
-      <TextField layoutX="349.0" layoutY="269.0" prefHeight="25.0" prefWidth="182.0" />
-      <Button layoutX="247.0" layoutY="334.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" text="Save" />
+      <TextField fx:id="txtDuration" layoutX="349.0" layoutY="269.0" prefHeight="25.0" prefWidth="182.0" />
+      <Button layoutX="247.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="113.0" text="Save" />
+      <TextField fx:id="txtDate" layoutX="67.0" layoutY="269.0" prefHeight="25.0" prefWidth="227.0" />
    </children>
 </AnchorPane>
