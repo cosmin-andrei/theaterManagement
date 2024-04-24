@@ -1,5 +1,6 @@
 package ro.iss2024.theatermanagement.service;
 
+import ro.iss2024.theatermanagement.controller.utils.SeatDTO;
 import ro.iss2024.theatermanagement.domain.*;
 import ro.iss2024.theatermanagement.observer.Observable;
 import ro.iss2024.theatermanagement.observer.Observer;
@@ -10,6 +11,7 @@ import ro.iss2024.theatermanagement.repository.irepository.ISpectatorRepo;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -62,6 +64,7 @@ public class Service implements IService, Observable {
             long id = uuid.getMostSignificantBits() & Long.MAX_VALUE;
             performance.setId(id);
             performanceRepo.save(performance);
+            notifyAllObservers();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -72,6 +75,7 @@ public class Service implements IService, Observable {
     public void updatePerformance(Performance performance) {
         try {
             performanceRepo.update(performance);
+            notifyAllObservers();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -82,6 +86,7 @@ public class Service implements IService, Observable {
     public void deletePerformance(Performance performance) {
         try {
             performanceRepo.delete(performance.getId());
+            notifyAllObservers();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -93,6 +98,7 @@ public class Service implements IService, Observable {
     public void updateSeatCategory(SeatCategory seatCategory) {
         try{
             seatCategoryRepo.update(seatCategory);
+            notifyAllObservers();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -101,12 +107,58 @@ public class Service implements IService, Observable {
     }
 
     @Override
+    public List<SeatDTO> getSeats(Performance performance) throws SQLException {
+        List<SeatReserved> seatReserved = (List<SeatReserved>) seatReservedRepo.findAll();
+        List<SeatDTO> seatDTOS = new ArrayList<>();
+        for (Seat seat : seatRepo.findAll()) {
+            boolean reserved = false;
+            for (SeatReserved seatRes : seatReserved) {
+                if (seatRes.getSeat().getId().equals(seat.getId()) && seatRes.getReservation().getPerformance().getId().equals(performance.getId())) {
+                    reserved = true;
+                    break;
+                }
+            }
+            if (!reserved) {
+                seatDTOS.add(new SeatDTO(seat.getCategory().getName(), seat.getRow(), seat.getNumber(), seat.getCategory().getPrice(), "free"));
+            }
+            else {
+                seatDTOS.add(new SeatDTO(seat.getCategory().getName(), seat.getRow(), seat.getNumber(), seat.getCategory().getPrice(), "reserved"));
+            }
+
+        }
+        return sortSeats(seatDTOS);
+    }
+
+    private List<SeatDTO> sortSeats(List<SeatDTO> seatDTOS) {
+        List<SeatDTO> freeSeats = seatDTOS.stream()
+                .filter(seat -> seat.getStatus().equals("free"))
+                .collect(Collectors.toList());
+        List<SeatDTO> reservedSeats = seatDTOS.stream()
+                .filter(seat -> seat.getStatus().equals("reserved"))
+                .collect(Collectors.toList());
+
+        Comparator<SeatDTO> comparator = Comparator.comparing(SeatDTO::getStatus)
+                .thenComparing(SeatDTO::getLodge)
+                .thenComparing(SeatDTO::getRow)
+                .thenComparing(SeatDTO::getNumber);
+        freeSeats.sort(comparator);
+        reservedSeats.sort(Comparator.comparing(SeatDTO::getStatus));
+
+        List<SeatDTO> sortedSeats = new ArrayList<>(freeSeats);
+        sortedSeats.addAll(reservedSeats);
+
+        return sortedSeats;
+    }
+
+
+    @Override
     public void addReservation(Reservation reservation) {
         try{
             UUID uuid = UUID.randomUUID();
             long id = uuid.getMostSignificantBits() & Long.MAX_VALUE;
             reservation.setId(id);
             reservationRepo.save(reservation);
+            notifyAllObservers();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -120,6 +172,7 @@ public class Service implements IService, Observable {
             long id = uuid.getMostSignificantBits() & Long.MAX_VALUE;
             seatReserved.setId(id);
             seatReservedRepo.save(seatReserved);
+            notifyAllObservers();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -134,11 +187,13 @@ public class Service implements IService, Observable {
 
         List<Performance> performancesStartingToday = allPerformances.stream()
                 .filter(performance -> performance.getDate().toLocalDateTime().toLocalDate().isAfter(today.minusDays(1)))
+                .sorted(Comparator.comparing(Performance::getDate))
                 .collect(Collectors.toList());
 
         return performancesStartingToday;
     }
 
+    @Override
     public void registerObserver(Observer o) {
         observers.add(o);
     }
@@ -155,6 +210,7 @@ public class Service implements IService, Observable {
         }
     }
 
+    @Override
     public Performance getPlayOfDay() throws SQLException {
         List<Performance> performances = getAllPerformances();
         LocalDate currentDate = LocalDate.now();

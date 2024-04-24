@@ -1,5 +1,6 @@
 package ro.iss2024.theatermanagement.service;
 
+import ro.iss2024.theatermanagement.controller.utils.SeatDTO;
 import ro.iss2024.theatermanagement.domain.*;
 
 import java.sql.SQLException;
@@ -20,8 +21,11 @@ public interface IService {
 
 
     ///Spectator
+    List<SeatDTO> getSeats(Performance performance) throws SQLException;
     void addReservation(Reservation reservation);
     void addSeatReserved(SeatReserved seatReserved);
 
     List<Performance> getAllPerformances() throws SQLException;
+
+    Performance getPlayOfDay() throws SQLException;
 }

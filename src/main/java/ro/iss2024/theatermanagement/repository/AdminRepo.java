@@ -18,23 +18,6 @@ public class AdminRepo implements IAdminRepo{
 
     @Override
     public Optional<Admin> findOne(Long aLong) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("select * from admin " +
-                "where id = ?")
-
-        ) {
-            statement.setLong(1, aLong);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String username = resultSet.getString("username");
-                String email = resultSet.getString("email");
-                String password = resultSet.getString("password");
-                Admin u = new Admin(username, email, password);
-                u.setId(aLong);
-                return Optional.of(u);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         return Optional.empty();
     }
 

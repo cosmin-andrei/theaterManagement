@@ -101,6 +101,7 @@ public class PerformanceRepo implements IRepository<Long, Performance>{
             statement.setInt(2, entity.getDurationPlay());
             statement.setString(3, entity.getDescriptionPlay());
             statement.setTimestamp(4, entity.getDate());
+            statement.setLong(5, entity.getId());
             statement.executeUpdate();
 
         } catch (SQLException e) {

@@ -3,10 +3,10 @@ Iteratia 1
 - Login
 - Vizualizare detalii reprezentatie
 - Adauga reprezentatie
-- Modifica reprezentatie
+- Sterge reprezentatie
 
 Iteratia 2
-- Sterge reprezentatie
+- Modifica reprezentatie
 - Vizualizare locuri
 - Rezerva loc
 - Plata rezervare

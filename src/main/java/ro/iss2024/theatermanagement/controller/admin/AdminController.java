@@ -102,7 +102,7 @@ public class AdminController implements Observer {
 
         try {
             FXMLLoader editLoader = new FXMLLoader();
-            editLoader.setLocation(getClass().getResource("/views/admin/edit-view.fxml"));
+            editLoader.setLocation(getClass().getResource("/edit-view.fxml"));
 
             Stage editStage = new Stage();
             Scene adminScene = new Scene(editLoader.load());
@@ -123,8 +123,7 @@ public class AdminController implements Observer {
 
     public void handleModify(ActionEvent actionEvent) {
         Performance performance = tblPerformances.getSelectionModel().getSelectedItem();
-        System.out.println(performance);
-        if (performance != null) {
+        if (performance == null) {
             MessageAlert.showErrorMessage(null, "Select a performance");
             return;
         }

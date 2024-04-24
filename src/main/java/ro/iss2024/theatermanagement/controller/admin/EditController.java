@@ -52,7 +52,7 @@ public class EditController {
         String title = txtName.getText();
         String description = txtDescription.getText();
         int duration = Integer.parseInt(txtDuration.getText());
-        Timestamp date = Timestamp.valueOf(LocalDateTime.parse(txtDate.getText()));
+        Timestamp date = Timestamp.valueOf(txtDate.getText());
 
         Performance p = new Performance(title, duration, description, date);
         if (performance != null) {
