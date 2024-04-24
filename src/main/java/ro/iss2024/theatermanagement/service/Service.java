@@ -43,12 +43,20 @@ public class Service implements IService, Observable {
 
     @Override
     public boolean login_admin(User user) {
-        return adminRepo.findByUsername(user.getUsername()).isPresent();
+        Admin admin = adminRepo.findByUsername(user.getUsername()).orElse(null);
+        if(admin!=null){
+            return admin.getPassword().equals(user.getPassword());
+        }
+        return false;
     }
 
     @Override
     public boolean login_spectator(User user) {
-        return spectatorRepo.findByUsername(user.getUsername()).isPresent();
+        Spectator spectator = spectatorRepo.findByUsername(user.getUsername()).orElse(null);
+        if(spectator!=null){
+            return spectator.getPassword().equals(user.getPassword());
+        }
+        return false;
     }
 
     @Override
