@@ -1,9 +1,12 @@
 package ro.iss2024.theatermanagement.repository;
 
+import ro.iss2024.theatermanagement.domain.Performance;
 import ro.iss2024.theatermanagement.domain.Seat;
+import ro.iss2024.theatermanagement.domain.SeatCategory;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class SeatRepo implements IRepository<Long, Seat>{
@@ -21,7 +24,30 @@ public class SeatRepo implements IRepository<Long, Seat>{
 
     @Override
     public Iterable<Seat> findAll() throws SQLException {
-        return null;
+        List<Seat> seats = new ArrayList<>();
+
+        try (PreparedStatement statement = connection.prepareStatement("select * from seat");
+             ResultSet resultSet = statement.executeQuery()
+        ) {
+
+            while (resultSet.next())
+            {
+                Long id= resultSet.getLong("id");
+                int row = resultSet.getInt("row");
+                int number = resultSet.getInt("number");
+                Long seatCategory = resultSet.getLong("seatCategory");
+                SeatCategory sc = new SeatCategory("", 0);
+                sc.setId(seatCategory);
+                Seat seat = new Seat(row, number, sc);
+                seat.setId(id);
+                seats.add(seat);
+
+            }
+            return seats;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

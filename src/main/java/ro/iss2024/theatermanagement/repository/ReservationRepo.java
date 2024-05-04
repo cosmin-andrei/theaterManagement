@@ -2,6 +2,8 @@ package ro.iss2024.theatermanagement.repository;
 
 import ro.iss2024.theatermanagement.domain.Performance;
 import ro.iss2024.theatermanagement.domain.Reservation;
+import ro.iss2024.theatermanagement.domain.SeatCategory;
+import ro.iss2024.theatermanagement.domain.Spectator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,6 +20,26 @@ public class ReservationRepo implements IRepository<Long, Reservation>{
 
     @Override
     public Optional<Reservation> findOne(Long aLong) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("select * from reservation where id=?");
+        ) {
+
+            statement.setLong(1, aLong);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                Long id = result.getLong("id");
+                Long id_spectator = result.getLong("id_spectator");
+                Long id_performance = result.getLong("id_performance");
+                Spectator spectator = new Spectator("", "", "", "");
+                spectator.setId(id_spectator);
+                Performance performance = new Performance("", 0, "", null);
+                performance.setId(id_performance);
+                Reservation resevation = new Reservation(spectator, performance);
+                resevation.setId(id);
+                return Optional.of(resevation);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error DB " + e);
+        }
         return Optional.empty();
     }
 

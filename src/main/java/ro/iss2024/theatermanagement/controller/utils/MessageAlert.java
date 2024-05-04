@@ -4,11 +4,12 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 public class MessageAlert {
-    public static void showMessage(Stage owner, Alert.AlertType type, String header, String text){
-        Alert message=new Alert(type);
-        message.setHeaderText(header);
+    public static void showMessage(Stage owner, String text){
+        Alert message=new Alert(Alert.AlertType.CONFIRMATION);
+        message.setHeaderText("Success");
         message.setContentText(text);
         message.initOwner(owner);
+        message.setOnCloseRequest(event -> message.close());
         message.showAndWait();
     }
 
@@ -17,6 +18,7 @@ public class MessageAlert {
         message.initOwner(owner);
         message.setTitle("EROARE");
         message.setContentText(text);
+        message.setOnCloseRequest(event -> message.close());
         message.showAndWait();
     }
 }

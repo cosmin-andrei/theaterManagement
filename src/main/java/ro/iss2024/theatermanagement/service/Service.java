@@ -44,7 +44,7 @@ public class Service implements IService, Observable {
     @Override
     public boolean login_admin(User user) {
         Admin admin = adminRepo.findByUsername(user.getUsername()).orElse(null);
-        if(admin!=null){
+        if (admin != null) {
             return admin.getPassword().equals(user.getPassword());
         }
         return false;
@@ -53,7 +53,7 @@ public class Service implements IService, Observable {
     @Override
     public boolean login_spectator(User user) {
         Spectator spectator = spectatorRepo.findByUsername(user.getUsername()).orElse(null);
-        if(spectator!=null){
+        if (spectator != null) {
             return spectator.getPassword().equals(user.getPassword());
         }
         return false;
@@ -104,7 +104,7 @@ public class Service implements IService, Observable {
 
     @Override
     public void updateSeatCategory(SeatCategory seatCategory) {
-        try{
+        try {
             seatCategoryRepo.update(seatCategory);
             notifyAllObservers();
         } catch (Exception e) {
@@ -114,12 +114,31 @@ public class Service implements IService, Observable {
         }
     }
 
+    private List<Seat> getAllSeats() throws SQLException {
+        List<Seat> seats = new ArrayList<>();
+        for (Seat seat : seatRepo.findAll()) {
+            SeatCategory seatCategory = seatCategoryRepo.findOne(seat.getCategory().getId()).orElse(null);
+            seat.setCategory(seatCategory);
+            seats.add(seat);
+        }
+        return seats;
+    }
+
     @Override
     public List<SeatDTO> getSeats(Performance performance) throws SQLException {
         List<SeatReserved> seatReserved = (List<SeatReserved>) seatReservedRepo.findAll();
         List<SeatDTO> seatDTOS = new ArrayList<>();
         for (Seat seat : seatRepo.findAll()) {
             boolean reserved = false;
+
+            SeatCategory seatCategory = seatCategoryRepo.findOne(seat.getCategory().getId()).orElse(null);
+            seat.setCategory(seatCategory);
+
+            for(SeatReserved seatRes : seatReserved){
+               Reservation reservation = reservationRepo.findOne(seatRes.getReservation().getId()).orElse(null);
+               seatRes.setReservation(reservation);
+            }
+
             for (SeatReserved seatRes : seatReserved) {
                 if (seatRes.getSeat().getId().equals(seat.getId()) && seatRes.getReservation().getPerformance().getId().equals(performance.getId())) {
                     reserved = true;
@@ -128,14 +147,14 @@ public class Service implements IService, Observable {
             }
             if (!reserved) {
                 seatDTOS.add(new SeatDTO(seat.getCategory().getName(), seat.getRow(), seat.getNumber(), seat.getCategory().getPrice(), "free"));
-            }
-            else {
+            } else {
                 seatDTOS.add(new SeatDTO(seat.getCategory().getName(), seat.getRow(), seat.getNumber(), seat.getCategory().getPrice(), "reserved"));
             }
 
         }
         return sortSeats(seatDTOS);
     }
+
 
     private List<SeatDTO> sortSeats(List<SeatDTO> seatDTOS) {
         List<SeatDTO> freeSeats = seatDTOS.stream()
@@ -159,33 +178,25 @@ public class Service implements IService, Observable {
     }
 
 
+
     @Override
-    public void addReservation(Reservation reservation) {
-        try{
+    public void addReservation(Reservation reservation, SeatDTO seat) {
+        try {
             UUID uuid = UUID.randomUUID();
             long id = uuid.getMostSignificantBits() & Long.MAX_VALUE;
             reservation.setId(id);
             reservationRepo.save(reservation);
-            notifyAllObservers();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void addSeatReserved(SeatReserved seatReserved) {
-        try{
-            UUID uuid = UUID.randomUUID();
-            long id = uuid.getMostSignificantBits() & Long.MAX_VALUE;
-            seatReserved.setId(id);
+            Seat s = getSeat(seat);
+            SeatReserved seatReserved = new SeatReserved(s, reservation);
+            UUID uuid1 = UUID.randomUUID();
+            long id1 = uuid1.getMostSignificantBits() & Long.MAX_VALUE;
+            seatReserved.setId(id1);
             seatReservedRepo.save(seatReserved);
             notifyAllObservers();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -229,5 +240,25 @@ public class Service implements IService, Observable {
             }
         }
         return null;
+    }
+
+    @Override
+    public Seat getSeat(SeatDTO seatDTO) throws SQLException {
+        Seat s = null;
+        for (Seat seat: seatRepo.findAll()) {
+            if(seat.getRow() == seatDTO.getRow() && seat.getNumber() == seatDTO.getNumber()){
+                s=seat;
+                break;
+            }
+        }
+
+        assert s != null;
+        s.setCategory(seatCategoryRepo.findOne(s.getCategory().getId()).orElse(null));
+        return s;
+
+    }
+
+    public List<SeatCategory> getSeatsCategory() throws SQLException {
+        return (List<SeatCategory>) seatCategoryRepo.findAll();
     }
 }

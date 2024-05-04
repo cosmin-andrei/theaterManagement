@@ -56,6 +56,7 @@ public class EditController {
 
         Performance p = new Performance(title, duration, description, date);
         if (performance != null) {
+            p.setId(performance.getId());
             service.updatePerformance(p);
         } else {
             service.addPerformance(p);

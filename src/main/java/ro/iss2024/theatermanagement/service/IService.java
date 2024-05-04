@@ -22,10 +22,10 @@ public interface IService {
 
     ///Spectator
     List<SeatDTO> getSeats(Performance performance) throws SQLException;
-    void addReservation(Reservation reservation);
-    void addSeatReserved(SeatReserved seatReserved);
+    void addReservation(Reservation reservation, SeatDTO seat);
 
     List<Performance> getAllPerformances() throws SQLException;
 
     Performance getPlayOfDay() throws SQLException;
+    Seat getSeat(SeatDTO seatDTO) throws SQLException;
 }

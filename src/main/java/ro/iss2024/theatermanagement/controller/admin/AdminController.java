@@ -127,6 +127,7 @@ public class AdminController implements Observer {
             MessageAlert.showErrorMessage(null, "Select a performance");
             return;
         }
+        System.out.println(performance.getId());
         showEditDialog(performance);
     }
 
@@ -134,9 +135,34 @@ public class AdminController implements Observer {
         Performance performance = tblPerformances.getSelectionModel().getSelectedItem();
         if (performance != null) {
             service.deletePerformance(performance);
-            MessageAlert.showMessage(null, null,"Deleted" ,"Performance deleted");
+            MessageAlert.showMessage(null,"Performance deleted");
         } else {
             MessageAlert.showErrorMessage(null, "Select a performance");
+        }
+    }
+
+    public void handleModifyPrice(ActionEvent actionEvent) {
+        showModifyPriceDialog();
+    }
+
+    private void showModifyPriceDialog() {
+        try {
+            FXMLLoader priceLoader = new FXMLLoader();
+            priceLoader.setLocation(getClass().getResource("/modifyPrice-view.fxml"));
+
+            Stage priceStage = new Stage();
+            Scene priceScene = new Scene(priceLoader.load());
+
+            priceStage.setTitle("Editeaza preturile");
+            priceStage.setScene(priceScene);
+
+            ModifyPriceController priceController = priceLoader.getController();
+            priceController.setService(service);
+            priceStage.show();
+
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

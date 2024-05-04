@@ -28,5 +28,6 @@
       <Button layoutX="212.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleAdd" text="Add" />
       <Button layoutX="267.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleModify" text="Modify" />
       <Button layoutX="337.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+      <Button layoutX="494.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleModifyPrice" text="Modify prices" />
    </children>
 </AnchorPane>
